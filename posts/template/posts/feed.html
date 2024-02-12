@@ -1,5 +1,6 @@
 {% extends "users/base.html" %}
 {%load static%}
+{%load mathfilters%}
 {% block body%}
 
 <div class="flex mt-5 p-10 justify-center">
@@ -22,14 +23,53 @@
         </div>
         <div class="px-6 py-4">
             <div class="icon-container flex gap-3">
-                <img src="{% static 'users/images/like.png'%}" class="h-5 w-5">
+                {% if logged_user in post.liked_by.all %}
+                <a href="" id="{{post.id}}" class="btn-like"><img src="{% static 'users/images/red_like.png'%}"
+                        class="h-5 w-5"></a>
+                {% else %}
+                <a href="" id="{{post.id}}" class="btn-like"><img src="{% static 'users/images/like.png'%}"
+                        class="h-5 w-5"></a>
+                {% endif %}
                 <img src="{% static 'users/images/comment.png'%}" class="h-5 w-5">
                 <img src="{% static 'users/images/share.png'%}" class="h-5 w-5">
             </div>
         </div>
+        <div>
+            {% if post.liked_by.count == 1 %} {{post.liked_by.first}} Likes this
+            {% elif post.liked_by.count > 1 %}
+            {{post.liked_by.first}} and other {{ post.liked_by.count|sub:1 }} Liked this
+            {% else%}
+            {% endif %}
+        </div>
         <div class="px-6 py-4">
             <div class="font-bold text-xl mb-2">{{post.title}}</div>
             <p class="text-gray-700 text-base">{{post.caption}}</p>
+        </div>
+        <div class="px-5 py 5">
+
+            {% for comment in post.comment.all %}
+            <b>{{comment.posted_by}}</b> {{comment.body}}
+            <br>
+            {% endfor %}
+
+        </div>
+        <div class="px-5 py-5 ">
+            <form action="" method="POST" class="bg-white shadow-md m-10 w-4/5 rounded px-8 py-6 pb-8 mb-4">
+                {% csrf_token %}
+                <div class="m-2 ">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Add comment</label>
+                </div>
+                <div class="flex">
+                    <div class="shadow appearance-none border rounded  py-2 px-3 text-gray-700">
+                        {{form.body}}
+                    </div>
+                    <div> <input type="hidden" name="post_id" id="post_id" value=" {{post.id}}">
+                        <input type="hidden" name="posted_by" id="post_id" value=" {{logged_user}}">
+                    </div>
+
+                    <button type="submit" class="text-white bg-black px-5 py-2 rounded">Add</button>
+                </div>
+            </form>
         </div>
 
     </a>
@@ -37,5 +77,16 @@
     {% endfor %}
 
 </div>
-
+<script type="text/javascript">
+    window.CSRF_TOKEN = "{{ csrf_token }}"
+    $(document).on('click', '.btn-like', function () {
+        var post_id = this.id
+        $.ajax({
+            method: "POST",
+            url: '/posts/like/',
+            data: { post_id: post_id, csrfmiddlewaretoken: window.CSRF_TOKEN }
+        })
+        window.location.href = "http://127.0.0.1:8000/posts/feed/"
+    })
+</script>
 {% endblock %}

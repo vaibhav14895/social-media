@@ -1,9 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-# Create your views here.
-from .forms import PostCreateForm
+from .forms import PostCreateForm,Commentform
 from .models import Post
-
 from django.shortcuts import get_object_or_404
 
 
@@ -21,7 +19,17 @@ def post_create(request):
 
 def feed (request):
     posts=Post.objects.all()
-    return render(request,"posts/feed.html",{"posts":posts})
+    logged_user=request.user
+    if request.method=="POST":
+        form =Commentform(data=request.POST)
+        new_comment =form.save(commit=False)
+        post_id=request.POST.get('post_id')
+        post=get_object_or_404(Post,id=post_id)
+        new_comment.post=post
+        new_comment.save()
+    else:
+        form=Commentform()
+    return render(request,"posts/feed.html",{"posts":posts,"logged_user":logged_user,"form":form})
 
 
 def like_post(request):
@@ -31,3 +39,4 @@ def like_post(request):
         post.liked_by.remove(request.user)
     else:
         post.liked_by.add(request.user)
+    return redirect('feed_post')

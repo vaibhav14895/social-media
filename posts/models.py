@@ -1,4 +1,7 @@
 
+import datetime
+from pyexpat import model
+from typing import Text
 from django.db import models
 
 from django.conf import settings
@@ -20,3 +23,16 @@ class Post(models.Model):
         if not self.slug:
             self.slug=slugify(self.title)
         super().save(*args,**kwargs)
+        
+        
+        
+class comment(models.Model):
+    post=models.ForeignKey(Post, on_delete=models.CASCADE,related_name='comment')
+    body=models.CharField(max_length=200)
+    created=models.DateTimeField(auto_now=True)
+    posted_by=models.CharField(max_length=200)
+    
+    class Meta:
+        ordering=('created',)
+    def __str__(self):
+        return self.body
