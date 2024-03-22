@@ -1,6 +1,6 @@
 from os import name
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -31,7 +31,7 @@ def user_login(request):
             user=authenticate(request,username=data['username'],password=data['password'])  
             if user is not None:
                 login(request,user)
-                return HttpResponse("user authenticated")
+                return redirect('feed_post')
             else:
                 return HttpResponse("invalid credentials")
     else:    
