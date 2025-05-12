@@ -13,7 +13,10 @@ def post_create(request):
             new_item=form.save(commit=False)
             new_item.user=request.user
             new_item.save()
+        else:
+            print(form.errors)
     else:
+        
         form=PostCreateForm(data=request.GET)
     return render (request,"posts/post_create.html",{'form':form})
 

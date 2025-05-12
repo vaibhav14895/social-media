@@ -1,5 +1,5 @@
-from os import name
-from django.http import HttpResponse
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .forms import *
 from django.contrib.auth import authenticate,login,logout
@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import UserEditForm,ProfileEditForm
 from posts.models import Post
-
-
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 @login_required
 def edit(request):
     if request.method =="POST":
@@ -49,7 +49,7 @@ def index(request):
     profile=Profile.objects.filter(user=current_user).first()
     return render(request,"users/index.html",{'posts':posts,'profile':profile})
 
-
+@csrf_exempt
 def register(request):
     if request.method=="POST":
        user_form =UserRegistrationForm(request.POST)
@@ -58,9 +58,19 @@ def register(request):
            new_user.set_password(user_form.cleaned_data['password'])
            new_user.save()
            Profile.objects.create(user=new_user)
-           return render(request,"users/register_done.html")
+           return JsonResponse("success")
     else:
         user_form=UserRegistrationForm()
     return render(request,'users/register.html',{'user_form':user_form} )
 
-        
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import UserRegistrationSerializer
+
+@api_view(['POST'])
+def post(request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

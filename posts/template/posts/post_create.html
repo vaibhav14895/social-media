@@ -2,18 +2,18 @@
 {%block body %}
 <h1 class="text-2xl m-10">Create post</h1>
 
-<form method="post" class="bg-white shadow-xl m-10 w-2/5 rounded px-8 pt-6 pb-8 mb-4">
+<form method="post" class="bg-white shadow-xl m-10 w-2/5 rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-2">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
         <div class="shadow text-gray-700 appearance-none border rounded py-2  mr-10">{{form.title}}</div>
     </div>
     <div class="mb-2">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="last_name">Upload Image</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="image">Upload Image</label>
         <div class="shadow text-gray-700 appearance-none border rounded py-2  mr-10">{{ form.image}}</div>
     </div>
     <div class="mb-2">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="last_name">Caption</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="caption">Caption</label>
         <div class="shadow text-gray-700 appearance-none border rounded py-2  mr-10">{{ form.caption }}</div>
     </div>
 

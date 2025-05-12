@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app',
     'posts',
     'mathfilters',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
