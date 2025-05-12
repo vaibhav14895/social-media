@@ -26,6 +26,9 @@ SECRET_KEY = 'django-insecure--e4xy$4l_5#&gbct!109zqvykn4a+^)i+!(lkpszsy62$656vm
 DEBUG = True
 
 ALLOWED_HOSTS = ['*',"https://social-media-294q.onrender.com"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://social-media-294q.onrender.com',
+]
 
 
 # Application definition
