@@ -5,52 +5,63 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Instagram Clone</title>
+
     <link rel="stylesheet" href="{% static 'users/styles.css' %}">
     <link rel="stylesheet" href="{% static 'users/update.css' %}">
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!-- Optional: Tailwind CDN if you use it directly -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 
-<body>
-    <nav class="shadow-lg p-4">
-        <div class="px-4 mx-auto">
-            <div class="flex justify-between">
-                <!-- website logo -->
-                <div>
-                    <a class="flex" href="{% url 'feed_post' %}">
-                        <img class="h-8 w-8 mr-2" src="{% static 'users/images/icon.png'%}" alt="">
-                        <span class="font-semibold text-lg text-gray-500">
-                            Instagram
+<body class="bg-white text-gray-800">
 
-                        </span>
-                    </a>
-                </div>
-                <!-- website item -->
+    <!-- Navigation -->
+    <nav class="shadow-lg p-4 bg-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <a class="flex items-center" href="{% url 'index' %}">
+                    <img class="h-8 w-8 mr-2" src="{% static 'users/images/icon.png' %}" alt="Logo">
+                    <span class="font-semibold text-lg text-gray-500">Instagram</span>
+                </a>
 
-                <div class="space-x-1">
+                <!-- Auth Links -->
+                <div class="space-x-2 text-sm sm:text-base">
                     {% if request.user.is_authenticated %}
-                    <a class="px-2 py-2 text-gray-500 font-semibold" href="{% url 'logout' %}">Logout</a>
-
-                    {%else %}
-                    <a class="px-2 py-2 text-gray-500 font-semibold" href="{% url 'login' %}">Login</a>
-                    <a class="px-2 py-2 text-gray-500 font-semibold" href="">link 3</a>
+                    <a class="text-gray-500 font-semibold" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <a class="text-gray-500 font-semibold" href="{% url 'login' %}">Login</a>
+                    <a class="text-gray-500 font-semibold" href="#">Link 3</a>
                     {% endif %}
-
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Main Content Block -->
+    <main class="px-4 py-6">
+        {% block body %}
+        {% endblock %}
+    </main>
 
-    {% block body %}
-    {% endblock %}
-    <div class="bg-sky h-10 w-10 border rounded-full fixed shadow-lg p-1 right-40 bottom-3 h-[60px]  ">
-        <a class="px-2 py-2 text-gray-500 font-semibold " href="{% url 'post_create' %}">+</a>
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-4 right-4 flex flex-col items-end space-y-2 sm:space-y-3 z-40">
+        <!-- Create Post Button -->
+        <a href="{% url 'post_create' %}"
+            class="bg-sky-500 hover:bg-sky-600 text-white w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-full shadow-lg text-xl font-bold transition duration-300">
+            +
+        </a>
+
+        <!-- Chat Button -->
+        <a href="#"
+            class="bg-sky-500 hover:bg-sky-600 text-white w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center rounded-full shadow-lg text-sm font-medium transition duration-300">
+            Chat
+        </a>
     </div>
-    <div class=" bg-sky h-10 w-15 border rounded-full fixed shadow-lg p-1 right-20 bottom-3 h-[60px]  ">
-        <a class="px-2 py-2 text-gray-500 font-semibold " href="">chat</a>
-    </div>
+
 </body>
 
 </html>

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostCreateForm,Commentform
 from .models import Post
 from django.shortcuts import get_object_or_404
-
+from app.models import Profile
 
 @login_required
 def post_create(request):
@@ -22,6 +22,7 @@ def post_create(request):
 
 def feed (request):
     posts=Post.objects.all()
+    profile=Profile.objects.filter(user=request.user).first()
     logged_user=request.user
     if request.method=="POST":
         form =Commentform(data=request.POST)
@@ -32,7 +33,7 @@ def feed (request):
         new_comment.save()
     else:
         form=Commentform()
-    return render(request,"posts/feed.html",{"posts":posts,"logged_user":logged_user,"form":form})
+    return render(request,"posts/feed.html",{"posts":posts,"logged_user":logged_user,"form":form,"profile":profile})
 
 
 def like_post(request):

@@ -3,6 +3,50 @@
 {%load mathfilters%}
 {% block body%}
 
+<div class=" mx-auto bg-white  rounded-lg p-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+        <!-- Profile Image -->
+        <div class="flex justify-center sm:justify-start">
+            <img src="{{profile.photo.url}}" alt="Profile"
+                class="w-32 h-32 rounded-full object-cover border-4 border-sky-500 shadow-md">
+        </div>
+
+        <!-- Profile Info -->
+        <div class="flex-1">
+            <div class="text-center sm:text-left">
+                <h2 class="text-2xl font-bold text-gray-800">{{logged_user}}</h2>
+                <p class="text-gray-600 mt-1">@{{logged_user}}</p>
+                <p class="text-gray-700 mt-3">Web developer. Coffee lover. Building cool stuff with Django &
+                    Tailwind.</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex justify-center sm:justify-start space-x-8 mt-4 text-center">
+                <div>
+                    <span class="block font-bold text-gray-800">120</span>
+                    <span class="text-sm text-gray-500">Posts</span>
+                </div>
+                <div>
+                    <span class="block font-bold text-gray-800">3.2K</span>
+                    <span class="text-sm text-gray-500">Followers</span>
+                </div>
+                <div>
+                    <span class="block font-bold text-gray-800">480</span>
+                    <span class="text-sm text-gray-500">Following</span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-center sm:justify-start gap-4 mt-6">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow">Follow</button>
+                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow">Message</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div class="flex mt-5 p-10 justify-center">
     <h2 class="text-3xl font-normal mb-2 text-gray-500">
         My post
@@ -18,7 +62,7 @@
                 <div class="mx-2 my-2 font-bold"><span>{{post.user}}</span></div>
 
             </div>
-            <img src="{{post.image.url}}" alt="">
+            <img src="{{post.image.url}}" alt="" class="w-full h-full object-cover">
         </div>
         <div class="px-6 py-4">
             <div class="icon-container flex gap-3">
