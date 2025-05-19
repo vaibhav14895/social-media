@@ -10,10 +10,10 @@
 <div class="grid mx-60 p-10 grid-cols-1">
     {% for post in posts %}
     <!-- card start here -->
-    <a href="{% url 'feed_post' %}">
+    <a href="{% url 'feed_post' post.user %}">
         <div class=" rounded overflow-hidden w-[470px] h-[470px] bg-white shadow-lg">
             <div class="user-container flex mx-5 my-5">
-                <img class="h-10 w-10 rounded-full" src="{{profile.photo.url}}" class="h-8 w-8" alt="">
+                <img class="h-10 w-10 rounded-full" src="{{post.user.profile.photo.url}}" class="h-8 w-8" alt="">
 
                 <div class="mx-2 my-2 font-bold"><span>{{post.user}}</span></div>
 

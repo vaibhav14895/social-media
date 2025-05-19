@@ -31,7 +31,7 @@ def user_login(request):
             user=authenticate(request,username=data['username'],password=data['password'])  
             if user is not None:
                 login(request,user)
-                return redirect('feed_post')
+                return redirect('index')
             else:
                 return HttpResponse("invalid credentials")
     else:    
@@ -45,23 +45,27 @@ def logout_page(request):
 @login_required
 def index(request):
     current_user=request.user
-    posts=Post.objects.filter(user=current_user)
+    posts=Post.objects.all()
     profile=Profile.objects.filter(user=current_user).first()
     return render(request,"users/index.html",{'posts':posts,'profile':profile})
 
 @csrf_exempt
 def register(request):
-    if request.method=="POST":
+    if request.method=="POST":   
        user_form =UserRegistrationForm(request.POST)
-       if user_form.is_valid():
+       profile_form=ProfileEditForm(request.POST,files=request.FILES)
+       if user_form.is_valid() and profile_form.is_valid():
            new_user=user_form.save(commit=False)
            new_user.set_password(user_form.cleaned_data['password'])
            new_user.save()
+           profile_form.save()
            Profile.objects.create(user=new_user)
-           return JsonResponse("success")
+           return render(request,
+                         'users/index.html')
     else:
         user_form=UserRegistrationForm()
-    return render(request,'users/register.html',{'user_form':user_form} )
+        profile_form=ProfileEditForm()
+    return render(request,'users/register.html',{'user_form':user_form,'profile_form':profile_form} )
 
 from rest_framework.response import Response
 from rest_framework import status

@@ -4,7 +4,7 @@ from .forms import PostCreateForm,Commentform
 from .models import Post
 from django.shortcuts import get_object_or_404
 from app.models import Profile
-
+from django.contrib.auth.models import User
 @login_required
 def post_create(request):
     if request.method =="POST":
@@ -20,9 +20,10 @@ def post_create(request):
         form=PostCreateForm(data=request.GET)
     return render (request,"posts/post_create.html",{'form':form})
 
-def feed (request):
-    posts=Post.objects.all()
-    profile=Profile.objects.filter(user=request.user).first()
+def feed (request,pk):
+    user = get_object_or_404(User, username=pk)
+    posts = Post.objects.filter(user=user)
+    profile = get_object_or_404(Profile, user=user)
     logged_user=request.user
     if request.method=="POST":
         form =Commentform(data=request.POST)

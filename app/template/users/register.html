@@ -2,7 +2,7 @@
 {%block body %}
 <h1 class="text-2xl m-10">Register User</h1>
 <div class="container py-5">
-    <form method="post" class="bg-white shadow-md m-10 w-2/5 rounded px-8 pt-6 pb-8 mb-4">
+    <form method="post" class="bg-white shadow-md m-10 w-2/5 rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-2">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="Username">Username</label>
@@ -25,7 +25,10 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm_Password">confirm Password</label>
             <div class="shadow text-gray-700 appearance-none border rounded py-2  mr-10">{{ user_form.password2 }}</div>
         </div>
-
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm_Password">ADD photo</label>
+            <div class="shadow text-gray-700 appearance-none border rounded py-2  mr-10">{{ profile_form.photo }}</div>
+        </div>
 
         <button type="submit" class="text-white bg-black px-5 py-2">Register</button>
     </form>

@@ -35,3 +35,4 @@ class ProfileEditForm(forms.ModelForm):
         
         model = Profile
         fields=('photo',)
+        widgets={'photo':forms.FileInput(attrs={'class':'form-control-file'})}
